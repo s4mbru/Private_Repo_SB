@@ -2,6 +2,7 @@ import time
 
 def main():
 
+<<<<<<< HEAD
     from BirdBrain import Finch
     finch = Finch('A') #Initializing the finch
     done = False #Boolean variable to end while loop when user is finished
@@ -31,6 +32,36 @@ def main():
             reportWeather(finch) #Calls the weather function to obtain temperature
         else:
             print("Invalid input!") #Testcase for all other inputs
+=======
+#makes a line
+def makeLine():
+    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',20, 50)#'F' is the direction the finch moves towards, 20 is the distance the finch moves, and 50 is the speed the finch moves at
+    finch.playNote(60, 2) #60 is one of the different note numbers that the finch can play and 2 is the beat numbe
+    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',10, 50)
+
+#makes a triangle
+def makeTriangle():
+    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',8, 50)
+    finch.setTurn('R',120, 50) #'R' is the direction the finch moves towards, 120 is the angle the finch turns, and 50 is the speed the finch moves at
+    finch.setMove('F',8, 50)
+    finch.setTurn('R',125, 50)
+    finch.setMove('F',8, 50)
+    finch.playNote(60, 0.5)
+    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',10, 50)
+
+#makes a circle
+finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+finch.setMotors(0, 100) #0 is the speed set for the left wheel and 100 is the speed set for the right wheel
+time.sleep(3) #
+finch.stop() #This causes the finch to stop moving
+finch.playNote(60, 0.5)
+finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+finch.setMove('F',10, 50)
+>>>>>>> 802257e (Save current changes before rebase)
 
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
     
