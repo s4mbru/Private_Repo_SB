@@ -15,3 +15,9 @@ finch.setMove('F',8, 50)
 finch.setTurn('R',125, 50)
 finch.setMove('F',8, 50)
 finch.setMove('F',10, 50)
+
+#Makes a circle
+finch.setMotors(0, 100)
+time.sleep(3)
+finch.stop()
+finch.setMove('F',10, 50)
