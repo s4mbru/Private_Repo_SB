@@ -8,27 +8,31 @@ def main():
     speed = 20 #Constant for finch speed
     distance = 100 #Constant for diatance finch moves
     
-    finch.startupDisplay(finch)
-    print("1 = Draw line") #Display option 1 
-    print("2 = Draw wavy line") #Display option 2
-    print("3 = Draw triangle") #Display option 3
-    print("4 = Draw circle") #Display option 4
-    'print("5 = Weather report")' #Add the temperature functions later
-    num = int(input("Enter your choice: ")) #Take user input to determine action
+    startupDisplay(finch)
 
     #While loop to keep taking user input until user is finished with finch
-    while done != True:
-        if num == 1:
-            drawLine(speed, distance) #Calls the line function to draw shape
-        elif num == 2:
-            drawWavyLine(speed, distance) #Calls the wavy line function to draw shape
-        elif num == 3:
-            drawTriangle(speed, distance) #Calls the triangle function to draw shape
+    while not done:
+        print("1 = Draw line") #Display option 1 
+        print("2 = Draw wavy line") #Display option 2
+        print("3 = Draw triangle") #Display option 3
+        print("4 = Draw circle") #Display option 4
+        print("5 = Weather report") #Add the temperature functions later
+        num = input("Enter your choice: ") #Take user input to determine action
+
+        if num == "1":
+            drawLine(finch, speed, distance) #Calls the line function to draw shape
+        elif num == "2":
+            drawWavyLine(finch, speed, distance) #Calls the wavy line function to draw shape
+        elif num == "3":
+            drawTriangle(finch, speed, distance) #Calls the triangle function to draw shape
+        elif num == "4":
+            drawCircle(finch, speed, distance) #Calls the circle function to draw shape
+        elif num == "5":
+            reportWeather(finch) #Calls the weather function to obtain temperature
         else:
-            drawCircle(speed, distance) #Calls the circle function to draw shape
-        '''else:
-            weatherReport(finch)''' #Add the temperature functions later
-        done = boolean(input("Do you want to exit? True/False: ")) #Ask if user wants to end loop
+            print("Invalid input!") #Testcase for all other inputs
+
+        done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
 
     endDisplay(finch) #Calls function to display disconnecting LED face
     finch.stopAll() #Ends system
@@ -59,8 +63,8 @@ def endDisplay(finch):
     ])
     time.sleep(1) #Stops system
 
-#Finch dances/sings after it completes its given task (Work on later)
-def finishDrawingCelebration(speed, distance):
+#Finch dances/sings after it completes its given task (Work on later/May remove)
+def finishDrawingCelebration(finch, speed, distance):
 
     finch.setMove('F', speed, distance)
 
@@ -68,23 +72,23 @@ def finishDrawingCelebration(speed, distance):
 # --------------
 
 #Finch draws a line
-def drawLine(speed, distance):
+def drawLine(finch, speed, distance):
 
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.playNote(60, 1) #Plays note when finished with task(Change into constant later)
-    finch.finishDrawingCelebration(speed, distance) #Fix later
+    finishDrawingCelebration(finch, speed, distance) #Fix later
 
 #Finch draws a wavy line
-def drawWavyLine(speed, distance):
+def drawWavyLine(finch, speed, distance):
 
     finch.setMotors(0, 60) #Sets motor/wheel speed of finch
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
     finch.setMove('F', speed, distance) #Finch moves forawrd
-    finch.finishDrawingCelebration(speed, distance) #Fix later
+    finishDrawingCelebration(finch, speed, distance) #Fix later
 
 #Finch draws a triangle
-def drawTriangle(speed, distance):
+def drawTriangle(finch, speed, distance):
 
     speed = 8
     distance = 50
@@ -94,10 +98,75 @@ def drawTriangle(speed, distance):
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
     finch.setMove('F', speed, distance) #Finch moves forward
-    finch.finishDrawingCelebration(20, 100) #Fix later
+    finishDrawingCelebration(finch, speed, distance) #Fix later
 
 #Finch draws a circle
-def drawCircle(speed, distance):
+def drawCircle(finch, speed, distance):
     
     finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
-    finch.finishDrawingCelebration(20, 100) #Fix later
+    finishDrawingCelebration(finch, speed, distance) #Fix later
+
+# Weather Sensor Methods
+# -----------------------------
+
+#Uses Finch's inherited micro:bit temperature sensor
+def getWeather(finch):
+
+    temp = finch.getTemperature() #Use finch sensor to obtain temeperature of room
+    return temp
+
+#Local classification based on temperature
+def classifyWeather(temp):
+    
+    if temp <= -1: #If less than 30F/-1C, temperature is cold
+        return "cold"
+    elif temp > -1 and temp <= 15: #If less greater than 30F/-1C but less than 60F/15C, temperature is warm
+        return "warm"
+    else: #If greater than 60F/15C, temperature is hot
+        return "hot"
+
+#Displays light color based on weather temperature (Mess around with later)
+def weatherLights(finch, wtype):
+    
+    if wtype == "cold":
+        finch.setBeak(0, 0, 100) #When cold, turn beak blue
+        finch.setTail("all", 0, 0, 100) #May change later
+    elif wtype == "warm":
+        finch.setBeak(0, 100, 0) #When warm, turn yellow/orange
+        finch.setTail("all", 0, 100, 0) #May change later
+    else:
+        finch.setBeak(100, 0, 0) #When hot, turn red
+        finch.setTail("all", 100, 0, 0) #May change later
+
+#Finch tweets depending on weather (Mess around with later/May just remove feature)
+def weatherSound(finch, wtype):
+
+    if wtype == "cold":
+        finch.playNote(50, 0.5) #Plays a note to signify cold weather (May change)
+        finch.playNote(45, 0.5)
+    elif wtype == "warm":
+        finch.playNote(60, 0.5) #Plays a note to signify cold weather (May change)
+        finch.playNote(64, 0.5)
+    else:
+        finch.playNote(72, 0.5) #Plays a note to signify cold weather (May change)
+        finch.playNote(76, 0.5)
+
+#Displays temperature on finch (Scrolling text)
+def reportWeather(finch):
+
+    # Get data
+    temp = getWeather(finch)
+    wtype = classifyWeather(temp)
+
+    # Console output
+    print("Temperature:", temp, "C")
+    print("Weather classification:", wtype)
+
+    # Display output on finch
+    weatherLights(finch, wtype)
+    # weatherSound(finch, wtype)
+    message = f"{wtype} {temp}C"
+    finch.print(message)
+
+if __name__ == "__main__":
+    main()
