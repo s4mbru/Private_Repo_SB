@@ -63,10 +63,17 @@ def endDisplay(finch):
     ])
     time.sleep(1) #Stops system
 
-#Finch dances/sings after it completes its given task (Work on later/May remove)
-def finishDrawingCelebration(finch, speed, distance):
 
-    finch.setMove('F', speed, distance)
+#Use .playNote() to play a little scale
+#when the Finch finishes drawing a designated shape
+def finishDrawingCelebration():
+    finch.playNote(60,0.5)# C4, middle C
+    finch.playNote(61,0.5)# C#4
+    finch.playNote(62,0.5)# D4
+    finch.playNote(63,0.5)# D#4
+    finch.playNote(64,0.5)# E4
+    finch.playNote(65,0.5)# F4
+    finch.playNote(66,1)# F#4
 
 # Shape methods
 # --------------
@@ -76,7 +83,7 @@ def drawLine(finch, speed, distance):
 
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.playNote(60, 1) #Plays note when finished with task(Change into constant later)
-    finishDrawingCelebration(finch, speed, distance) #Fix later
+    finishDrawingCelebration()
 
 #Finch draws a wavy line
 def drawWavyLine(finch, speed, distance):
@@ -85,7 +92,7 @@ def drawWavyLine(finch, speed, distance):
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
     finch.setMove('F', speed, distance) #Finch moves forawrd
-    finishDrawingCelebration(finch, speed, distance) #Fix later
+    finishDrawingCelebration()
 
 #Finch draws a triangle
 def drawTriangle(finch, speed, distance):
@@ -98,13 +105,13 @@ def drawTriangle(finch, speed, distance):
     finch.setMove('F', speed, distance) #Finch moves forward
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch, speed, distance) #Fix later
+    finishDrawingCelebration()
 
 #Finch draws a circle
 def drawCircle(finch, speed, distance):
     
     finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
-    finishDrawingCelebration(finch, speed, distance) #Fix later
+    finishDrawingCelebration()
 
 # Weather Sensor Methods
 # -----------------------------
