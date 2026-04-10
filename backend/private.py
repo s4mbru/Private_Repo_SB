@@ -33,9 +33,24 @@ def main():
             print("Invalid input!") #Testcase for all other inputs
 
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
-
+    
+    whenDone() #Calls to print finished message on terminal
     endDisplay(finch) #Calls function to display disconnecting LED face
     finch.stopAll() #Ends system
+
+#User should press button on app to alert that they are done drawing. As they press
+#that buttton on the app, they should be pressing the A or B button on the LED board to get feedback on their art
+def whenDone():
+    #Two different messages that could be displayed
+    message1= "BEAUTIFUL!"
+    message2= "AMAZING!!"
+    
+    #Message displayed on LED board when A button is pressed
+    if(finch.getButton('A')):
+        finch.print(message1)
+    #Message displayed on LED board when B button is pressed
+    if(finch.getButton('B')):
+        Finch.print(message2)
 
 #LED display at start of every drawing phase
 def startupDisplay(finch):
