@@ -1,8 +1,8 @@
-from BirdBrain import Finch
 import time
 
 def main():
 
+    from BirdBrain import Finch
     finch = Finch('A') #Initializing the finch
     done = False #Boolean variable to end while loop when user is finished
     speed = 20 #Constant for finch speed
@@ -34,8 +34,7 @@ def main():
 
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
     
-    whenDone() #Calls to print finished message on terminal
-    endDisplay(finch) #Calls function to display disconnecting LED face
+    whenDone() #Calls to print finished message on terminal and display LED face
     finch.stopAll() #Ends system
 
 #User should press button on app to alert that they are done drawing. As they press that buttton on the app, they should be pressing the A or B button 
@@ -51,7 +50,8 @@ def whenDone():
         finch.print(message1)
     #Message displayed on LED board when B button is pressed
     if(finch.getButton('B')):
-        Finch.print(message2)
+        finch.print(message2)
+    endDisplay(finch) #Calls method to display LED face
 
 #LED display at start of every drawing phase
 def startupDisplay(finch):
@@ -79,7 +79,6 @@ def endDisplay(finch):
     ])
     time.sleep(1) #Stops system
 
-
 #Use .playNote() to play a little scale
 #when the Finch finishes drawing a designated shape
 def finishDrawingCelebration():
@@ -96,17 +95,19 @@ def finishDrawingCelebration():
 
 #Finch draws a line
 def drawLine(finch, speed, distance):
-
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
-    finch.playNote(60, 1) #Plays note when finished with task(Change into constant later)
     finishDrawingCelebration()
 
 #Finch draws a wavy line
 def drawWavyLine(finch, speed, distance):
-
+    obsCheck()
     finch.setMotors(0, 60) #Sets motor/wheel speed of finch
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forawrd
     finishDrawingCelebration()
 
@@ -115,17 +116,21 @@ def drawTriangle(finch, speed, distance):
 
     speed = 8
     distance = 50
-    
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 120, distance) #Finch turns 120 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
     finishDrawingCelebration()
 
 #Finch draws a circle
 def drawCircle(finch, speed, distance):
-    
+    obsCheck()
     finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
     finishDrawingCelebration()
 
@@ -190,6 +195,23 @@ def reportWeather(finch):
     # weatherSound(finch, wtype)
     message = f"{wtype} {temp}C"
     finch.print(message)
+
+#Object Sensor Method
+#--------------------
+#Method detects if an object is in front of the finch and
+#moves away from it using the distance sensor
+def obsCheck():
+    dist = finch.getDistance()
+    while(dist < 30):
+#If an object is in front of the finch the finch's beak will become red and
+#play an F# in the sixth octave to alert
+#user that there is an object that needs to be moved from the art space
+        finch.playNote(90,1)
+        finch.setBeak(100,0,0)
+        finch.setTurn('L', 90, 50) #Finch turns left
+        dist = finch.getDistance()
+#Resets finch tail to no color when it is no longer blocked by an object
+    finch.setBeak(0,0,0)
 
 if __name__ == "__main__":
     main()
