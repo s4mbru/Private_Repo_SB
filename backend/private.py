@@ -32,43 +32,15 @@ def main():
         else:
             print("Invalid input!") #Testcase for all other inputs
 
-#makes a line
-def makeLine():
-    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-    finch.setMove('F',20, 50)#'F' is the direction the finch moves towards, 20 is the distance the finch moves, and 50 is the speed the finch moves at
-    finch.playNote(60, 2) #60 is one of the different note numbers that the finch can play and 2 is the beat numbe
-    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-    finch.setMove('F',10, 50)
-
-#makes a triangle
-def makeTriangle():
-    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-    finch.setMove('F',8, 50)
-    finch.setTurn('R',120, 50) #'R' is the direction the finch moves towards, 120 is the angle the finch turns, and 50 is the speed the finch moves at
-    finch.setMove('F',8, 50)
-    finch.setTurn('R',125, 50)
-    finch.setMove('F',8, 50)
-    finch.playNote(60, 0.5)
-    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-    finch.setMove('F',10, 50)
-
-#makes a circle
-finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-finch.setMotors(0, 100) #0 is the speed set for the left wheel and 100 is the speed set for the right wheel
-time.sleep(3) #
-finch.stop() #This causes the finch to stop moving
-finch.playNote(60, 0.5)
-finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
-finch.setMove('F',10, 50)
-
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
     
-    whenDone() #Calls to print finished message on terminal and display LED face
+    whenDone(finch) #Calls to print finished message on terminal and display LED face
     finch.stopAll() #Ends system
 
-#User should press button on app to alert that they are done drawing. As they press that buttton on the app, they should be pressing the A or B button 
-#on the LED board to get feedback on their art
-def whenDone():
+#User should press button on app to alert that they are done drawing.
+#As they press that buttton on the app, they should be pressing
+#the A or B button on the LED board to get feedback on their art
+def whenDone(finch):
     
     #Two different messages that could be displayed
     message1= "BEAUTIFUL!"
@@ -80,6 +52,7 @@ def whenDone():
     #Message displayed on LED board when B button is pressed
     if(finch.getButton('B')):
         finch.print(message2)
+
     endDisplay(finch) #Calls method to display LED face
 
 #LED display at start of every drawing phase
@@ -110,7 +83,8 @@ def endDisplay(finch):
 
 #Use .playNote() to play a little scale
 #when the Finch finishes drawing a designated shape
-def finishDrawingCelebration():
+def finishDrawingCelebration(finch):
+
     finch.playNote(60,0.5)# C4, middle C
     finch.playNote(61,0.5)# C#4
     finch.playNote(62,0.5)# D4
@@ -124,44 +98,48 @@ def finishDrawingCelebration():
 
 #Finch draws a line
 def drawLine(finch, speed, distance):
-    obsCheck()
+
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration()
+    finishDrawingCelebration(finch)
 
 #Finch draws a wavy line
 def drawWavyLine(finch, speed, distance):
-    obsCheck()
+
+    obsCheck(finch)
     finch.setMotors(0, 60) #Sets motor/wheel speed of finch
-    obsCheck()
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    obsCheck()
+    obsCheck(finch)
     finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
-    obsCheck()
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forawrd
-    finishDrawingCelebration()
+    finishDrawingCelebration(finch)
 
 #Finch draws a triangle
 def drawTriangle(finch, speed, distance):
 
     speed = 8
     distance = 50
-    obsCheck()
+    
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    obsCheck()
+    obsCheck(finch)
     finch.setTurn('R', 120, distance) #Finch turns 120 degrees right
-    obsCheck()
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    obsCheck()
+    obsCheck(finch)
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
-    obsCheck()
+    obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration()
+    finishDrawingCelebration(finch)
 
 #Finch draws a circle
 def drawCircle(finch, speed, distance):
-    obsCheck()
+
+    obsCheck(finch)
     finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
-    finishDrawingCelebration()
+    finishDrawingCelebration(finch)
 
 # Weather Sensor Methods
 # -----------------------------
@@ -227,37 +205,24 @@ def reportWeather(finch):
 
 #Object Sensor Method
 #--------------------
+
 #Method detects if an object is in front of the finch and
 #moves away from it using the distance sensor
-def obsCheck():
+def obsCheck(finch):
+
     dist = finch.getDistance()
+
     while(dist < 30):
-#If an object is in front of the finch the finch's beak will become red and
-#play an F# in the sixth octave to alert
-#user that there is an object that needs to be moved from the art space
+    #If an object is in front of the finch the finch's beak will become red and
+    #play an F# in the sixth octave to alert
+    #user that there is an object that needs to be moved from the art space
         finch.playNote(90,1)
         finch.setBeak(100,0,0)
         finch.setTurn('L', 90, 50) #Finch turns left
         dist = finch.getDistance()
-#Resets finch tail to no color when it is no longer blocked by an object
+
+    #Resets finch tail to no color when it is no longer blocked by an object
     finch.setBeak(0,0,0)
 
 if __name__ == "__main__":
     main()
-
-#Object Sensor Method
-#--------------------
-#Method detects if an object is in front of the finch and
-#moves away from it using the distance sensor
-def obsCheck():
-    dist = finch.getDistance()
-    while(dist<30):
-#If an object is in front of the finch the finch's beak will become red and
-#play an F# in the sixth octave to alert
-#user that there is an object that needs to be moved from the art space
-        finch.playNote(90,1)
-        finch.setBeak(100,0,0)
-        finch.setTurn('L', 90, 50) #Finch turns left
-        dist = finch.getDistance()
-#Resets finch tail to no color when it is no longer blocked by an object
-    finch.setBeak(0,0,0)
