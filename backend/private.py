@@ -96,17 +96,19 @@ def finishDrawingCelebration():
 
 #Finch draws a line
 def drawLine(finch, speed, distance):
-
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
-    finch.playNote(60, 1) #Plays note when finished with task(Change into constant later)
     finishDrawingCelebration()
 
 #Finch draws a wavy line
 def drawWavyLine(finch, speed, distance):
-
+    obsCheck()
     finch.setMotors(0, 60) #Sets motor/wheel speed of finch
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forawrd
     finishDrawingCelebration()
 
@@ -115,17 +117,21 @@ def drawTriangle(finch, speed, distance):
 
     speed = 8
     distance = 50
-    
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 120, distance) #Finch turns 120 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
+    obsCheck()
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
+    obsCheck()
     finch.setMove('F', speed, distance) #Finch moves forward
     finishDrawingCelebration()
 
 #Finch draws a circle
 def drawCircle(finch, speed, distance):
-    
+    obsCheck()
     finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
     finishDrawingCelebration()
 
@@ -193,3 +199,20 @@ def reportWeather(finch):
 
 if __name__ == "__main__":
     main()
+
+#Object Sensor Method
+#--------------------
+#Method detects if an object is in front of the finch and
+#moves away from it using the distance sensor
+def obsCheck():
+    dist = finch.getDistance()
+    while(dist<30):
+#If an object is in front of the finch the finch's beak will become red and
+#play an F# in the sixth octave to alert
+#user that there is an object that needs to be moved from the art space
+        finch.playNote(90,1)
+        finch.setBeak(100,0,0)
+        finch.setTurn('L', 90, 50) #Finch turns left
+        dist = finch.getDistance()
+#Resets finch tail to no color when it is no longer blocked by an object
+    finch.setBeak(0,0,0)
