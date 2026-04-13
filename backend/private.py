@@ -1,8 +1,8 @@
-from BirdBrain import Finch
 import time
 
 def main():
 
+    from BirdBrain import Finch
     finch = Finch('A') #Initializing the finch
     done = False #Boolean variable to end while loop when user is finished
     speed = 20 #Constant for finch speed
@@ -32,10 +32,38 @@ def main():
         else:
             print("Invalid input!") #Testcase for all other inputs
 
+#makes a line
+def makeLine():
+    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',20, 50)#'F' is the direction the finch moves towards, 20 is the distance the finch moves, and 50 is the speed the finch moves at
+    finch.playNote(60, 2) #60 is one of the different note numbers that the finch can play and 2 is the beat numbe
+    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',10, 50)
+
+#makes a triangle
+def makeTriangle():
+    finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',8, 50)
+    finch.setTurn('R',120, 50) #'R' is the direction the finch moves towards, 120 is the angle the finch turns, and 50 is the speed the finch moves at
+    finch.setMove('F',8, 50)
+    finch.setTurn('R',125, 50)
+    finch.setMove('F',8, 50)
+    finch.playNote(60, 0.5)
+    finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+    finch.setMove('F',10, 50)
+
+#makes a circle
+finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+finch.setMotors(0, 100) #0 is the speed set for the left wheel and 100 is the speed set for the right wheel
+time.sleep(3) #
+finch.stop() #This causes the finch to stop moving
+finch.playNote(60, 0.5)
+finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
+finch.setMove('F',10, 50)
+
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
     
-    whenDone() #Calls to print finished message on terminal
-    endDisplay(finch) #Calls function to display disconnecting LED face
+    whenDone() #Calls to print finished message on terminal and display LED face
     finch.stopAll() #Ends system
 
 #User should press button on app to alert that they are done drawing. As they press that buttton on the app, they should be pressing the A or B button 
@@ -51,7 +79,8 @@ def whenDone():
         finch.print(message1)
     #Message displayed on LED board when B button is pressed
     if(finch.getButton('B')):
-        Finch.print(message2)
+        finch.print(message2)
+    endDisplay(finch) #Calls method to display LED face
 
 #LED display at start of every drawing phase
 def startupDisplay(finch):
@@ -78,7 +107,6 @@ def endDisplay(finch):
         0, 1, 1, 1, 0
     ])
     time.sleep(1) #Stops system
-
 
 #Use .playNote() to play a little scale
 #when the Finch finishes drawing a designated shape
@@ -196,6 +224,23 @@ def reportWeather(finch):
     # weatherSound(finch, wtype)
     message = f"{wtype} {temp}C"
     finch.print(message)
+
+#Object Sensor Method
+#--------------------
+#Method detects if an object is in front of the finch and
+#moves away from it using the distance sensor
+def obsCheck():
+    dist = finch.getDistance()
+    while(dist < 30):
+#If an object is in front of the finch the finch's beak will become red and
+#play an F# in the sixth octave to alert
+#user that there is an object that needs to be moved from the art space
+        finch.playNote(90,1)
+        finch.setBeak(100,0,0)
+        finch.setTurn('L', 90, 50) #Finch turns left
+        dist = finch.getDistance()
+#Resets finch tail to no color when it is no longer blocked by an object
+    finch.setBeak(0,0,0)
 
 if __name__ == "__main__":
     main()
