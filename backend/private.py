@@ -2,7 +2,6 @@ import time
 
 def main():
 
-<<<<<<< HEAD
     from BirdBrain import Finch
     finch = Finch('A') #Initializing the finch
     done = False #Boolean variable to end while loop when user is finished
@@ -32,7 +31,7 @@ def main():
             reportWeather(finch) #Calls the weather function to obtain temperature
         else:
             print("Invalid input!") #Testcase for all other inputs
-=======
+
 #makes a line
 def makeLine():
     finch.setDisplay([0,1,0,1,0,0,1,0,1,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
@@ -61,7 +60,6 @@ finch.stop() #This causes the finch to stop moving
 finch.playNote(60, 0.5)
 finch.setDisplay([1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,1,1,1,0])
 finch.setMove('F',10, 50)
->>>>>>> 802257e (Save current changes before rebase)
 
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
     
