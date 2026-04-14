@@ -17,10 +17,10 @@ def main():
         print("3 = Draw triangle") #Display option 3
         print("4 = Draw circle") #Display option 4
         print("5 = Weather report") #Add the temperature functions later
-	print("6 = Finch moves forward") #Display forward movement
-	print("7 = Finch turns to the right") #Display turn right movement
-	print("8 = Finch turns to the left") #Display turn left movement
-	print("9 = Finch turns around") #Display turn around movement
+	    print("6 = Finch moves forward") #Display forward movement
+	    print("7 = Finch turns to the right") #Display turn right movement
+	    print("8 = Finch turns to the left") #Display turn left movement
+	    print("9 = Finch turns around") #Display turn around movement
         num = input("Enter your choice: ") #Take user input to determine action
 
         if num == "1":
@@ -34,15 +34,15 @@ def main():
         elif num == "5":
             reportWeather(finch) #Calls the weather function to obtain temperature
         elif (num == "6"):
-    	    finch.setMove('F', speed, distance) #Finch moves forward
-	#turning inputs only turn and don't move forward
-	elif (num == "7"):
-	    finch.setMove('R', 90, 30)#Finch turns 90 degrees to the right
-	elif (num == "8"):
-	    finch.setMove('L', 90, 30)#Finch turns 90 degrees to the left
-	elif (num == "9"):
-	    finch.setMove('R', 180, 30)#Finch turns 180 degrees to the right to turn the opposite direction
-	else:
+    	    finch.setMove('F', speed, distance) #Finch moves forward turning 
+                                                #inputs only turn and don't move forward
+	    elif (num == "7"):
+	        finch.setMove('R', 90, 30)#Finch turns 90 degrees to the right
+	    elif (num == "8"):
+	        finch.setMove('L', 90, 30)#Finch turns 90 degrees to the left
+	    elif (num == "9"):
+	        finch.setMove('R', 180, 30)#Finch turns 180 degrees to the right to turn the opposite direction
+	    else:
             print("Invalid input!") #Testcase for all other inputs
 
         done = input("Do you want to exit? True/False: ").lower() == "true" #Ask if user wants to end loop
