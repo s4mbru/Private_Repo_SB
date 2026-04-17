@@ -1,70 +1,90 @@
-from private import startupDisplay, endDisplay, whenDone
+from private import classifyWeather, getValidInput, getWeather, reportWeather, weatherLights
 
-class FakeFinch:
-    def __init__(self, button_a=False, button_b=False):
-        self.display = None
+#Class to instantiate Finch dummy for test functions to test verification
+class TestFinch:
+    def __init__(self, temperature = 0):
+        self.temperature = temperature
+        self.beak = None
+        self.tail = None
         self.printed_messages = []
-        self.button_a = button_a
-        self.button_b = button_b
 
-    def setDisplay(self, pattern):
-        self.display = pattern
+    def getTemperature(self):
+        return self.temperature
 
-    def getButton(self, button_name):
-        if button_name == 'A':
-            return self.button_a
-        if button_name == 'B':
-            return self.button_b
-        return False
+    def setBeak(self, r, g, b):
+        self.beak = (r, g, b)
+
+    def setTail(self, port, r, g, b):
+        self.tail = (port, r, g, b)
 
     def print(self, message):
         self.printed_messages.append(message)
 
-def test_startup_display_pattern():
+
+#Testing weather functions for functional requirement
+#-----------------------------------------------------
+
+#Makes sure get method for weather functions work
+def test_getWeatherTemperature():
+    finch = TestFinch(temperature=12)
+    assert getWeather(finch) == 12
+
+#Checks to see if cold condition is correct
+def test_classifyColdWeather():
+    assert classifyWeather(-1) == "cold"
+
+#Checks to see if warm condition is correct
+def test_classifyWarmWeather():
+    assert classifyWeather(15) == "warm"
+
+#Checks to see if hot condition is correct
+def test_classifyHotWeather():
+    assert classifyWeather(16) == "hot"
+
+#Checks to see if cold condition lights are set correctly
+def test_weatherColdLights():
+    finch = TestFinch()
+    weatherLights(finch, "cold")
+    assert finch.beak == (0, 0, 100)
+    assert finch.tail == ("all", 0, 0, 100)
+
+#Checks to see if warm condition lights are set correctly
+def test_weatherWarmLights():
     finch = FakeFinch()
-    startupDisplay(finch)
+    weatherLights(finch, "warm")
+    assert finch.beak == (0, 100, 0)
+    assert finch.tail == ("all", 0, 100, 0)
 
-    assert finch.display == [
-        0, 1, 0, 1, 0,
-        0, 1, 0, 1, 0,
-        1, 0, 0, 0, 1,
-        1, 0, 0, 0, 1,
-        0, 1, 1, 1, 0
-    ]
+#Checks to see if hot condition lights are set correctly
+def test_weatherHotLights():
+    finch = TestFinch()
+    weatherLights(finch, "hot")
+    assert finch.beak == (100, 0, 0)
+    assert finch.tail == ("all", 100, 0, 0)
 
-def test_end_display_pattern():
-    finch = FakeFinch()
-    endDisplay(finch)
+#Simple check to see if temperature displays correctly
+def test_reportWeatherMessage():
+    finch = TestFinch(temperature=-2)
+    reportWeather(finch)
+    assert finch.printed_messages == ["cold -2C"]
+    assert finch.beak == (0, 0, 100)
+    assert finch.tail == ("all", 0, 0, 100)
 
-    assert finch.display == [
-        1, 1, 0, 1, 1,
-        0, 0, 0, 0, 0,
-        1, 0, 0, 0, 1,
-        1, 0, 0, 0, 1,
-        0, 1, 1, 1, 0
-    ]
+#Testing user input for nonfunctional requirement
+#-------------------------------------------------
 
-def test_when_done_button_a_shows_beautiful():
-    finch = FakeFinch(button_a=True, button_b=False)
-    whenDone(finch)
+#Tests to make sure space issue is eliminated(after)
+def test_inputAfterSpace():
+    assert getValidInput("6 ") == "6"
 
-    assert "BEAUTIFUL!" in finch.printed_messages
+#Tests to make sure space issue is eliminated(before)
+def test_inputBeforeSpace():
+    assert getValidInput(" 7") == "7"
 
-def test_when_done_button_b_shows_amazing():
-    finch = FakeFinch(button_a=False, button_b=True)
-    whenDone(finch)
+#Tests to make sure number in string issue is eliminated
+def test_inputNumbersAndLetters():
+    assert getValidInput("6f5") == "6"
 
-    assert "AMAZING!!" in finch.printed_messages
-
-def test_when_done_both_buttons_show_both_messages():
-    finch = FakeFinch(button_a=True, button_b=True)
-    whenDone(finch)
-
-    assert "BEAUTIFUL!" in finch.printed_messages
-    assert "AMAZING!!" in finch.printed_messages
-
-def test_when_done_no_button_shows_no_message():
-    finch = FakeFinch(button_a=False, button_b=False)
-    whenDone(finch)
-
-    assert finch.printed_messages == []
+#Tests to make sure invalid input feature works
+def test_inputInvalid():
+    assert getValidInput("abc") is None
