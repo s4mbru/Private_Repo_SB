@@ -1,7 +1,7 @@
 from private import classifyWeather, getValidInput, getWeather, reportWeather, weatherLights
 
-#Class to instantiate Finch dummy for test functions to test verification
-class TestFinch:
+#Class to instantiate a Finch dummy for test functions to test verification
+class DummyFinch:
     def __init__(self, temperature = 0):
         self.temperature = temperature
         self.beak = None
@@ -26,7 +26,7 @@ class TestFinch:
 
 #Makes sure get method for weather functions work
 def test_getWeatherTemperature():
-    finch = TestFinch(temperature=12)
+    finch = DummyFinch(temperature=12)
     assert getWeather(finch) == 12
 
 #Checks to see if cold condition is correct
@@ -43,28 +43,28 @@ def test_classifyHotWeather():
 
 #Checks to see if cold condition lights are set correctly
 def test_weatherColdLights():
-    finch = TestFinch()
+    finch = DummyFinch()
     weatherLights(finch, "cold")
     assert finch.beak == (0, 0, 100)
     assert finch.tail == ("all", 0, 0, 100)
 
 #Checks to see if warm condition lights are set correctly
 def test_weatherWarmLights():
-    finch = FakeFinch()
+    finch = DummyFinch()
     weatherLights(finch, "warm")
     assert finch.beak == (0, 100, 0)
     assert finch.tail == ("all", 0, 100, 0)
 
 #Checks to see if hot condition lights are set correctly
 def test_weatherHotLights():
-    finch = TestFinch()
+    finch = DummyFinch()
     weatherLights(finch, "hot")
     assert finch.beak == (100, 0, 0)
     assert finch.tail == ("all", 100, 0, 0)
 
 #Simple check to see if temperature displays correctly
 def test_reportWeatherMessage():
-    finch = TestFinch(temperature=-2)
+    finch = DummyFinch(temperature=-2)
     reportWeather(finch)
     assert finch.printed_messages == ["cold -2C"]
     assert finch.beak == (0, 0, 100)
