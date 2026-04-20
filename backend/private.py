@@ -120,13 +120,25 @@ def drawLine(finch, speed, distance):
 def drawWavyLine(finch, speed, distance):
 
     obsCheck(finch)
-    finch.setMotors(0, 60) #Sets motor/wheel speed of finch
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
-    finch.setMove('F', speed, distance) #Finch moves forward
+    time.sleep(1) #Finch rests for 1 second
     obsCheck(finch)
-    finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
+    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
     obsCheck(finch)
-    finch.setMove('F', speed, distance) #Finch moves forawrd
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
     finishDrawingCelebration(finch)
 
 #Finch draws a triangle
@@ -151,7 +163,9 @@ def drawTriangle(finch, speed, distance):
 def drawCircle(finch, speed, distance):
 
     obsCheck(finch)
-    finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
+    finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
+    obsCheck(finch)
+    time.sleep(3) #Finch rests for 3 seconds
     finishDrawingCelebration(finch)
 
 # Weather Sensor Methods
@@ -213,7 +227,7 @@ def reportWeather(finch):
     # Display output on finch
     weatherLights(finch, wtype)
     # weatherSound(finch, wtype)
-    message = f"{wtype} {temp}C"
+    message = f"{wtype}{temp}C"
     finch.print(message)
 
 #Object Sensor Method
