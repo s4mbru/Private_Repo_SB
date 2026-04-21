@@ -174,7 +174,7 @@ def drawTriangle(finch, speed, distance):
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
     obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch) #Calls obstacle check method to detect if anything is blocking Finch
+    finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 def drawCircle(finch, speed, distance):
     '''Draw method that makes the Finch draw a presized circle'''
@@ -183,7 +183,7 @@ def drawCircle(finch, speed, distance):
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
     obsCheck(finch)
     time.sleep(3) #Finch rests for 3 seconds
-    finishDrawingCelebration(finch) #Calls obstacle check method to detect if anything is blocking Finch
+    finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 # Weather Sensor Methods
 # -----------------------
