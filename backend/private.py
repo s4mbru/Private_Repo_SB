@@ -53,8 +53,8 @@ def main():
         else:
             print("Invalid input!") #Output for all inputs with no number
 
-        choice = input("Do you want to exit? true/false: ").lower() #Ask if user wants to end loop
-        done = choice in ["true", "t"]
+        choice = input("Do you want to exit?: ").lower() #Ask if user wants to end loop
+        done = choice in ["true", "t", "yes", "y"]
         
     whenDone(finch, ledOn, ledOff) #Calls to print finished message on terminal and display LED face
     finch.stopAll() #Ends system
@@ -137,13 +137,25 @@ def drawWavyLine(finch, speed, distance):
     '''Draw method that makes the Finch draw a presized wavy line'''
 
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
-    finch.setMotors(0, 60) #Sets motor speed of finch to 0 on left and 60 on right
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
-    finch.setMove('F', speed, distance) #Finch moves forward
+    time.sleep(1) #Finch rests for 1 second
     obsCheck(finch)
-    finch.setTurn('R', 360, 30) #Finch turns 360 degrees right
+    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
     obsCheck(finch)
-    finch.setMove('F', speed, distance) #Finch moves forawrd
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
+    obsCheck(finch)
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 def drawTriangle(finch, speed, distance):
@@ -168,7 +180,9 @@ def drawCircle(finch, speed, distance):
     '''Draw method that makes the Finch draw a presized circle'''
 
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
-    finch.setTurn('R', 360, distance) #Finch turns 360 degrees right
+    finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
+    obsCheck(finch)
+    time.sleep(3) #Finch rests for 3 seconds
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 # Weather Sensor Methods
