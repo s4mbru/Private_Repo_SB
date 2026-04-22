@@ -1,46 +1,33 @@
-# Script running the website and combining the frontend and backend!
-from flask import Flask, render_template, jsonify, request
-import threading
-import os
-import sys
-import subprocess
+#Script for frontend to backend taken from sample repository app.py
+from flask import Flask
+from flask_socketio import SocketIO
+from lib.BirdBrain import Finch
 
-app = Flask(__name__, template_folder='frontend')
+TOTALLY_SECURE_KEY = 'meow'
+PORT = 5555
 
-# Route to serve the main HTML page
-@app.route('/')
-def index():
-    return render_template('index.html')
+socketio = SocketIO(cors_allowed_origins='*', transport=['websocket'], ping_interval=3)
 
-# API endpoint to serve data to the frontend (route is redundant for now)
-@app.route('/api/data')
-def get_data():
-    data = {"message": "Hello world!"}
-    return jsonify(data)
+def configure():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = TOTALLY_SECURE_KEY
+    socketio.init_app(app)
+    return app
 
-# Running our first script!
-@app.route('/first_finch_test', methods=['POST'])
-def first_finch_test():
-    script_path = os.path.join('backend', 'meow.py')
-    try:
-        result = subprocess.check_output(
-            [sys.executable, script_path],
-            text = True,
-            stderr = subprocess.STDOUT
-        )
-        return jsonify({"status": "success", "output": result.strip()})   
-    # This should point directly to the script you want to run
-    # WRITE HERE
+@socketio.on('connect')
+def test_connect():
+    socketio.emit('connected?')
 
-    except FileNotFoundError:
-        error_msg = f"Error: The file '{script_path}' was not found."
-        print(error_msg)
-        return jsonify({"status": "error", "message": error_msg}), 500
+@socketio.on('disconnect')
+def test_disconnect():
+    socketio.emit('disconnected?')
 
-    except Exception as e:
-        print(f"General Error: {str(e)}")
-        return jsonify({"status": "error", "message": f"Server error: {str(e)}"}), 500
+@socketio.on('finch_test')
+def finch_test():
+    finch = Finch('A')
+    finch.setMove('F', 100, 100)
+    finch.setTurn('R', 360, 30)
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app = configure()
+    socketio.run(app, port=PORT)
