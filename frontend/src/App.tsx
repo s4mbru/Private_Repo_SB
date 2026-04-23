@@ -1,54 +1,71 @@
-import { useState } from 'react'
-import { io } from 'socket.io-client'
-import Button from '@mui/material/Button'
-import './App.css'
+import { useEffect, useState } from "react"
+import { io, Socket } from "socket.io-client"
+import "./App.css"
 
-//const TOTALLY_SECURE_KEY: string = 'meow'
-const PORT: number = 5555
-const URL: string = 'http://localhost:' + String(PORT)
-const PADDING: string = '25px'
+const socket: Socket = io("http://localhost:5555", {
+  transports: ["websocket"],
+})
 
 function App() {
+  const [status, setStatus] = useState("Connecting...")
 
-    const socket = io(URL, {
-      path: '/socket.io/',
-      transports: ['websocket'],
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to backend")
+      setStatus("Connected to backend")
     })
 
-    const [connected, setConnected] = useState(false)
-
-    function onConnect() {
-        setConnected(true)
-        console.log('connected!')
-    }
-
-    function onDisconnect() {
-        setConnected(false)
-        console.log('disconnected!')
-    }
-
-    socket.on('connect', onConnect)
-    socket.on('disconnect', onDisconnect)
-    socket.on('error', (err) => {
-        console.log(err)
+    socket.on("status", (data) => {
+      console.log("Status:", data.message)
+      setStatus(data.message)
     })
 
-    return (
-        <div style={{ padding: PADDING }} >
-            <Button
-                variant='contained'
-                color = { connected ? 'success' : 'error' }
-                onClick={() => {
-                    socket.emit('finch_test')
-                }}
-            >
-                <h2>Run Finch Test</h2>
-            </Button>
-            <div style={{padding: PADDING}} >
-            { connected ? 'connected' : 'not connected' }
-            </div>
+    socket.on("error", (data) => {
+      console.error("Error:", data.message)
+      setStatus(`Error: ${data.message}`)
+    })
+
+    return () => {
+      socket.off("connect")
+      socket.off("status")
+      socket.off("error")
+    }
+  }, [])
+
+  const sendCommand = (command: string) => {
+    console.log("Sending:", command)
+    socket.emit("run_command", { command })
+  }
+
+  return (
+    <div className="app">
+      <h1>Finch Control Panel</h1>
+
+      <p className="status">{status}</p>
+
+      <div className="movement">
+        <button onClick={() => sendCommand("forward")}>↑</button>
+        <div>
+          <button onClick={() => sendCommand("left")}>←</button>
+          <button onClick={() => sendCommand("right")}>→</button>
         </div>
-    )
+        <button onClick={() => sendCommand("turnaround")}>↓</button>
+      </div>
+
+      <div className="shapes">
+        <button onClick={() => sendCommand("circle")}>Circle</button>
+        <button onClick={() => sendCommand("wave")}>Wave</button>
+        <button onClick={() => sendCommand("line")}>Line</button>
+        <button onClick={() => sendCommand("triangle")}>Triangle</button>
+      </div>
+
+      <div className="weather">
+        <button onClick={() => sendCommand("temperature")}>
+          Temperature
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export default App

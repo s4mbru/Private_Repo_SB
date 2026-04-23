@@ -2,7 +2,7 @@ import time
 
 def main():
 
-    from BirdBrain import Finch
+    from lib.BirdBrain import Finch
     finch = Finch('A') #Initializing the finch
     done = False #Boolean variable to end while loop when user is finished
     speed = 20 #Constant for finch speed
