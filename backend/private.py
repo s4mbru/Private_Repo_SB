@@ -156,6 +156,8 @@ def drawWavyLine(finch, speed, distance):
     finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
     time.sleep(1) #Finch rests for 1 second
+     # Stop motors so the Finch does not keep moving forever
+    finch.setMotors(0, 0)
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 def drawTriangle(finch, speed, distance):
@@ -181,8 +183,9 @@ def drawCircle(finch, speed, distance):
 
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
-    obsCheck(finch)
-    time.sleep(3) #Finch rests for 3 seconds
+    time.sleep(2) #Finch rests for 3 seconds
+    # STOP the motors (this was missing)
+    finch.setMotors(0, 0)
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 # Weather Sensor Methods
