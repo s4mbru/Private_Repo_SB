@@ -66,7 +66,7 @@ def startupDisplay(finch, on, off):
     '''LED face display at start of Finch connection'''
 
     #Displays a smiley face on LED screen
-    finch.setDisplay([
+    finch.setDisplay([0
         off, on, off, on, off,
         off, on, off, on, off,
         on, off, off, off, on,
@@ -139,19 +139,11 @@ def drawWavyLine(finch, speed, distance):
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
-    time.sleep(1) #Finch rests for 1 second
-    obsCheck(finch)
     finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
-    obsCheck(finch)
-    time.sleep(1) #Finch rests for 1 second
     obsCheck(finch)
     finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
-    time.sleep(1) #Finch rests for 1 second
-    obsCheck(finch)
     finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
-    obsCheck(finch)
-    time.sleep(1) #Finch rests for 1 second
     obsCheck(finch)
     finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     obsCheck(finch)
