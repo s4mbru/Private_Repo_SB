@@ -56,7 +56,7 @@ def main():
         choice = input("Do you want to exit?: ").lower() #Ask if user wants to end loop
         done = choice in ["true", "t", "yes", "y"]
         
-    whenDone(finch, ledOn, ledOff) #Calls to print finished message on terminal and display LED face
+    whenDone(finch) #Calls to print finished message on terminal and display LED face
     finch.stopAll() #Ends system
 
 #Basic Helper Functions
@@ -233,6 +233,7 @@ def reportWeather(finch):
     message = f"{wtype} {temp}C"
     finch.print(message)
 
+    
 #Object Sensor Method
 #---------------------
 
@@ -260,7 +261,7 @@ def obsCheck(finch):
 #A and B Button Sensor Method
 #-----------------------------
 
-def whenDone(finch, on, off):
+def whenDone(finch):
     '''User should press button on app to signify that they are done drawing.
     After signaling that they are done, they should be pressing the A or B button on the LED board to get feedback on their art'''
 
@@ -282,9 +283,6 @@ def whenDone(finch, on, off):
             time.sleep(2)
             break
         time.sleep(0.1)
-
-    #Calls method to display LED face
-    endDisplay(finch, on, off)
 
 #Runs the Main Function
 #Nothing should be below this line
