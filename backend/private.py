@@ -28,13 +28,13 @@ def main():
         num = getValidInput(choice)
         
         if num == "1":
-            drawLine(finch, speed, distance) #Calls the line function to draw shape
+            drawLine(finch, speed, distance, ledOn, ledOff) #Calls the line function to draw shape
         elif num == "2":
-            drawWavyLine(finch, speed, distance) #Calls the wavy line function to draw shape
+            drawWavyLine(finch, speed, distance,  ledOn, ledOff) #Calls the wavy line function to draw shape
         elif num == "3":
-            drawTriangle(finch, speed, distance) #Calls the triangle function to draw shape
+            drawTriangle(finch, speed, distance, ledOn, ledOff) #Calls the triangle function to draw shape
         elif num == "4":
-            drawCircle(finch, speed, distance) #Calls the circle function to draw shape
+            drawCircle(finch, speed, distance, ledOn, ledOff) #Calls the circle function to draw shape
         elif num == "5":
             reportWeather(finch) #Calls the weather function to obtain temperature
         elif num == "6":
@@ -88,7 +88,7 @@ def endDisplay(finch, on, off):
     ])
     time.sleep(1) #Waits until LED face is displayed before exiting
 
-def finishDrawingCelebration(finch):
+def finishDrawingCelebration(finch, on, off):
     '''Use .playNote() to play a little scale
     when the Finch finishes drawing a designated shape'''
 
@@ -102,7 +102,7 @@ def finishDrawingCelebration(finch):
     FS4 = 66
     shortNote = 0.5
     longNote = 1
-
+    endDisplay(finch, on, off)
     #Finch uses note constants to play a song
     finch.playNote(C4, shortNote)
     finch.playNote(CS4, shortNote)
@@ -126,16 +126,16 @@ def getValidInput(userIN):
 # Shape methods
 # --------------
 
-def drawLine(finch, speed, distance):
+def drawLine(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized line'''
-
+    startupDisplay(finch, on, off)
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
-def drawWavyLine(finch, speed, distance):
+def drawWavyLine(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized wavy line'''
-
+    startupDisplay(finch, on, off)
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0,60)
     time.sleep(1)
@@ -152,11 +152,11 @@ def drawWavyLine(finch, speed, distance):
     finch.setMotors(0,60)
     time.sleep(1)
     finch.stop()    
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
-def drawTriangle(finch, speed, distance):
+def drawTriangle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized triangle'''
-
+    startupDisplay(finch, on, off)
     speed = 8
     distance = 50
     
@@ -170,16 +170,16 @@ def drawTriangle(finch, speed, distance):
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
     obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
-def drawCircle(finch, speed, distance):
+def drawCircle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized circle'''
-
+    startupDisplay(finch, on, off)
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
     time.sleep(2)
     finch.setMotors(0,0)
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 # Weather Sensor Methods
 # -----------------------
