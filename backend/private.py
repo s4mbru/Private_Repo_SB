@@ -230,7 +230,7 @@ def reportWeather(finch):
 
     #Display tail and beak lights and scrolling text on finch
     weatherLights(finch, wtype)
-    message = f"{wtype}{temp}C"
+    message = f"{wtype} {temp}C"
     finch.print(message)
     time.sleep(3)
     finch.setBeak(0,0,0)
