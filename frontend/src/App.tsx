@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Finch Control Panel</h1>
+      <h1>Finch Artist</h1>
 
       <p className="status">{status}</p>
 
@@ -62,6 +62,12 @@ function App() {
       <div className="weather">
         <button onClick={() => sendCommand("temperature")}>
           Temperature
+        </button>
+      </div>
+
+      <div className="DONE!">
+        <button onClick={() => sendCommand("done")}>
+          DONE!
         </button>
       </div>
     </div>

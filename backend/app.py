@@ -7,6 +7,7 @@ from private import (
     drawCircle,
     reportWeather,
     obsCheck,
+    whenDone
 )
 from lib.BirdBrain import Finch
 
@@ -108,6 +109,9 @@ def run_command(data):
         elif command == 'turnaround':
             obsCheck(robot)
             robot.setTurn('R', 185, 30)
+
+        elif command == 'done':
+            whenDone(finch)
 
         else:
             emit('error', {'message': f'Unknown command: {command}'})
