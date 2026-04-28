@@ -137,15 +137,21 @@ def drawWavyLine(finch, speed, distance):
     '''Draw method that makes the Finch draw a presized wavy line'''
 
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
-    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    finch.setMotors(0,60)
+    time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
+    finch.setMotors(60,0)
+    time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    finch.setMotors(0,60)
+    time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(60, 0) #Finch's left wheel turns at speed of 60
+    finch.setMotors(60,0)
+    time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
+    finch.setMotors(0,60)
+    time.sleep(1)
+    finch.stop()    
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 def drawTriangle(finch, speed, distance):
@@ -171,6 +177,8 @@ def drawCircle(finch, speed, distance):
 
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
+    time.sleep(2)
+    finch.setMotors(0,0)
     finishDrawingCelebration(finch) #Finch alerts user of task completion
 
 # Weather Sensor Methods
