@@ -66,7 +66,7 @@ def test_weatherHotLights():
 def test_reportWeatherMessage():
     finch = DummyFinch(temperature=-2)
     reportWeather(finch)
-    assert finch.printed_messages == ["cold -2C"]
+    assert finch.printed_messages == ["cold-2C"]
     assert finch.beak == (0, 0, 100)
     assert finch.tail == ("all", 0, 0, 100)
 
