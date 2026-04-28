@@ -20,6 +20,8 @@ class DummyFinch:
     def print(self, message):
         self.printed_messages.append(message)
 
+    def setDisplay(self, display):
+        self.display = display
 
 #Testing weather functions for functional requirement
 #-----------------------------------------------------
@@ -65,10 +67,11 @@ def test_weatherHotLights():
 #Simple check to see if temperature displays correctly
 def test_reportWeatherMessage():
     finch = DummyFinch(temperature=-2)
-    reportWeather(finch)
+    off = 0
+    reportWeather(finch, off)
     assert finch.printed_messages == ["cold -2C"]
-    assert finch.beak == (0, 0, 100)
-    assert finch.tail == ("all", 0, 0, 100)
+    assert finch.beak == (off, off, off)
+    assert finch.tail == ("all", off, off, off)
 
 #Testing user input for nonfunctional requirement
 #-------------------------------------------------

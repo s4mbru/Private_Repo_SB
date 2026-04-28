@@ -7,6 +7,7 @@ from private import (
     drawCircle,
     reportWeather,
     obsCheck,
+    whenDone
 )
 from lib.BirdBrain import Finch
 
@@ -23,6 +24,9 @@ socketio = SocketIO(
 FINCH_DEVICE = 'A'
 DEFAULT_SPEED = 20
 DEFAULT_DISTANCE = 100
+ledOn = 1
+ledOff = 0
+# Keep one shared Finch reference
 finch = None
 
 
@@ -77,21 +81,22 @@ def finch_test():
 def run_command(data):
     """Receives commands from the frontend
     Expected format: { "command": "line" }"""
-    
+
     command = data.get('command') if data else None
 
     try:
         robot = get_finch()
+
         if command == 'line':
-            drawLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
         elif command == 'wave':
-            drawWavyLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawWavyLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
         elif command == 'triangle':
-            drawTriangle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawTriangle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
         elif command == 'circle':
-            drawCircle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawCircle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
         elif command == 'temperature':
-            reportWeather(robot)
+            reportWeather(robot, ledOff)
         elif command == 'forward':
             obsCheck(robot)
             robot.setMove('F', DEFAULT_SPEED, DEFAULT_DISTANCE)
@@ -104,6 +109,8 @@ def run_command(data):
         elif command == 'turnaround':
             obsCheck(robot)
             robot.setTurn('R', 185, 30)
+        elif command == 'done':
+            whenDone(robot, ledOn, ledOff)
         else:
             emit('error', {'message': f'Unknown command: {command}'})
             return
@@ -114,7 +121,6 @@ def run_command(data):
     except Exception as e:
         emit('error', {'message': f'Command failed: {str(e)}'})
         print(f'Command failed: {command} -> {e}')
-
 
 if __name__ == '__main__':
     app = configure()

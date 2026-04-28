@@ -62,6 +62,13 @@ function App() {
           Temperature
         </button>
       </div>
+
+      <div className="DONE!">
+        <button onClick={() => sendCommand("done")}>
+          DONE!
+        </button>
+        </div>
+
     </div>
   )
 }
