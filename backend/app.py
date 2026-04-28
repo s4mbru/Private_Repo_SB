@@ -24,7 +24,8 @@ socketio = SocketIO(
 FINCH_DEVICE = 'A'
 DEFAULT_SPEED = 20
 DEFAULT_DISTANCE = 100
-
+ledOn = 1
+ledOff = 0
 # Keep one shared Finch reference
 finch = None
 
@@ -80,16 +81,16 @@ def run_command(data):
         robot = get_finch()
 
         if command == 'line':
-            drawLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
 
         elif command == 'wave':
-            drawWavyLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawWavyLine(robot, DEFAULT_SPEED, DEFAULT_DISTANCE,  ledOn, ledOff)
 
         elif command == 'triangle':
-            drawTriangle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawTriangle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE, ledOn, ledOff)
 
         elif command == 'circle':
-            drawCircle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE)
+            drawCircle(robot, DEFAULT_SPEED, DEFAULT_DISTANCE,  ledOn, ledOff)
 
         elif command == 'temperature':
             reportWeather(robot)
