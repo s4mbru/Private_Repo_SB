@@ -56,7 +56,7 @@ def main():
         choice = input("Do you want to exit?: ").lower() #Ask if user wants to end loop
         done = choice in ["true", "t", "yes", "y"]
         
-    whenDone(finch, ledOn, ledOff) #Calls to print finished message on LED screen
+    whenDone(finch) #Calls to print finished message on LED screen
     finch.stopAll() #Ends system
 
 #Basic Helper Functions
@@ -90,7 +90,7 @@ def endDisplay(finch, on, off):
     
     time.sleep(1) #Waits until LED face is displayed before exiting
 
-def finishDrawingCelebration(finch):
+def finishDrawingCelebration(finch, on, off):
     '''Use .playNote() to play a little scale
     when the Finch finishes drawing a designated shape'''
 
@@ -105,6 +105,7 @@ def finishDrawingCelebration(finch):
     shortNote = 0.5
     longNote = 1
 
+    endDisplay(finch, on, off)
     #Finch uses note constants to play a song
     finch.playNote(C4, shortNote)
     finch.playNote(CS4, shortNote)
@@ -134,7 +135,7 @@ def drawLine(finch, speed, distance, on, off):
     startupDisplay(finch, on, off) #Calls function to display smiley face
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 def drawWavyLine(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized wavy line'''
@@ -157,7 +158,7 @@ def drawWavyLine(finch, speed, distance, on, off):
     obsCheck(finch)
     time.sleep(1) #Finch rests for 1 second
     finch.setMotors(0, 0) #Stops the motors
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 def drawTriangle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized triangle'''
@@ -176,7 +177,7 @@ def drawTriangle(finch, speed, distance, on, off):
     finch.setTurn('R', 125, distance) #Finch turns 125 degrees right
     obsCheck(finch)
     finch.setMove('F', speed, distance) #Finch moves forward
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 def drawCircle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized circle'''
@@ -186,7 +187,7 @@ def drawCircle(finch, speed, distance, on, off):
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
     time.sleep(2) #Finch rests for 3 seconds
     finch.setMotors(0, 0) #Stops the motors
-    finishDrawingCelebration(finch) #Finch alerts user of task completion
+    finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 # Weather Sensor Methods
 # -----------------------
@@ -272,7 +273,7 @@ def obsCheck(finch):
 #A and B Button Sensor Method
 #-----------------------------
 
-def whenDone(finch, on, off):
+def whenDone(finch):
     '''User should press button on app to signify that they are done drawing.
     After signaling that they are done, they should be pressing the A or B button on the LED board to get feedback on their art'''
 
@@ -286,16 +287,14 @@ def whenDone(finch, on, off):
         #Displays message1 button B on LED screen is pressed
         if finch.getButton('B'):
             finch.print(message1)
-            time.sleep(6) #Waits until message is displayed before ending system
+            time.sleep(2) #Waits until message is displayed before ending system
             break #exits while loop to continue the next step
         #Displays message2 button A on LED screen is pressed
         elif finch.getButton('A'):
             finch.print(message2)
-            time.sleep(5)
+            time.sleep(2)
             break
         time.sleep(0.1)
-
-    endDisplay(finch, on, off)
 
 #Runs the Main Function
 #Nothing should be below this line

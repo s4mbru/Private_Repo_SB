@@ -110,7 +110,7 @@ def run_command(data):
             obsCheck(robot)
             robot.setTurn('R', 185, 30)
         elif command == 'done':
-            whenDone(robot, ledOn, ledOff)
+            whenDone(robot)
         else:
             emit('error', {'message': f'Unknown command: {command}'})
             return
