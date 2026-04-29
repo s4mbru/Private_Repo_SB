@@ -76,20 +76,6 @@ def startupDisplay(finch, on, off):
     
     time.sleep(1) #Waits until LED face is displayed before exiting
 
-def endDisplay(finch, on, off):
-    '''LED face display at end of Finch connection'''
-
-    #Displays a sleeping face on LED screen
-    finch.setDisplay([
-        on, on, off, on, on,
-        off, off, off, off, off,
-        on, off, off, off, on,
-        on, off, off, off, on,
-        off, on, on, on, off
-    ])
-    
-    time.sleep(1) #Waits until LED face is displayed before exiting
-
 def finishDrawingCelebration(finch, on, off):
     '''Use .playNote() to play a little scale
     when the Finch finishes drawing a designated shape'''
@@ -105,7 +91,16 @@ def finishDrawingCelebration(finch, on, off):
     shortNote = 0.5
     longNote = 1
 
-    endDisplay(finch, on, off)
+    #Displays a sleeping face on LED screen
+    finch.setDisplay([
+        on, on, off, on, on,
+        off, off, off, off, off,
+        on, off, off, off, on,
+        on, off, off, off, on,
+        off, on, on, on, off
+    ])
+    time.sleep(1) #Waits until LED face is displayed before exiting
+    
     #Finch uses note constants to play a song
     finch.playNote(C4, shortNote)
     finch.playNote(CS4, shortNote)
