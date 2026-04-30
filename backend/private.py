@@ -145,13 +145,6 @@ def drawWavyLine(finch, speed, distance, on, off):
     obsCheck(finch)
     finch.setMotors(0, 60)
     time.sleep(1)
-    obsCheck(finch)
-    finch.setMotors(60, 0)
-    time.sleep(1)
-    obsCheck(finch)
-    finch.setMotors(0, 60)
-    obsCheck(finch)
-    time.sleep(1) #Finch rests for 1 second
     finch.setMotors(0, 0) #Stops the motors
     finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 

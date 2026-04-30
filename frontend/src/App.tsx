@@ -9,7 +9,7 @@ const socket: Socket = io("http://localhost:5555", {
 function App() {
   
   const [status, setStatus] = useState("Connecting...")
-
+  const [bgColor, setBgColor] = useState('white');
   useEffect(() => {
     socket.on("connect", () => {
       console.log("Connected to backend")
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Finch Control Panel</h1>
+      <h1>Finch Artist</h1>
 
       <p className="status">{status}</p>
 
