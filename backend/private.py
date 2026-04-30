@@ -36,7 +36,7 @@ def main():
         elif num == "4":
             drawCircle(finch, speed, distance, ledOn, ledOff) #Calls the circle function to draw shape
         elif num == "5":
-            reportWeather(finch) #Calls the weather function to obtain temperature
+            reportWeather(finch, ledOff) #Calls the weather function to obtain temperature
         elif num == "6":
             obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
             finch.setMove('F', speed, distance) #Finch moves forward turning 
@@ -56,7 +56,7 @@ def main():
         choice = input("Do you want to exit?: ").lower() #Ask if user wants to end loop
         done = choice in ["true", "t", "yes", "y"]
         
-    whenDone(finch) #Calls to print finished message on terminal and display LED face
+    whenDone(finch) #Calls to print finished message on LED screen
     finch.stopAll() #Ends system
 
 #Basic Helper Functions
@@ -73,19 +73,7 @@ def startupDisplay(finch, on, off):
         on, off, off, off, on,
         off, on, on, on, off
     ])
-    time.sleep(1) #Waits until LED face is displayed before exiting
-
-def endDisplay(finch, on, off):
-    '''LED face display at end of Finch connection'''
-
-    #Displays a sleeping face on LED screen
-    finch.setDisplay([
-        on, on, off, on, on,
-        off, off, off, off, off,
-        on, off, off, off, on,
-        on, off, off, off, on,
-        off, on, on, on, off
-    ])
+    
     time.sleep(1) #Waits until LED face is displayed before exiting
 
 def finishDrawingCelebration(finch, on, off):
@@ -102,7 +90,17 @@ def finishDrawingCelebration(finch, on, off):
     FS4 = 66
     shortNote = 0.5
     longNote = 1
-    endDisplay(finch, on, off)
+
+    #Displays a sleeping face on LED screen
+    finch.setDisplay([
+        on, on, off, on, on,
+        off, off, off, off, off,
+        on, off, off, off, on,
+        on, off, off, off, on,
+        off, on, on, on, off
+    ])
+    time.sleep(1) #Waits until LED face is displayed before exiting
+    
     #Finch uses note constants to play a song
     finch.playNote(C4, shortNote)
     finch.playNote(CS4, shortNote)
@@ -128,38 +126,42 @@ def getValidInput(userIN):
 
 def drawLine(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized line'''
-    startupDisplay(finch, on, off)
+
+    startupDisplay(finch, on, off) #Calls function to display smiley face
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMove('F', speed, distance) #Finch moves forward
     finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 def drawWavyLine(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized wavy line'''
-    startupDisplay(finch, on, off)
+
+    startupDisplay(finch, on, off) #Calls function to display smiley face
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
-    finch.setMotors(0,60)
+    finch.setMotors(0, 60) #Finch's right wheel turns at speed of 60
     time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(60,0)
+    finch.setMotors(60, 0)
     time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(0,60)
+    finch.setMotors(0, 60)
     time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(60,0)
+    finch.setMotors(60, 0)
     time.sleep(1)
     obsCheck(finch)
-    finch.setMotors(0,60)
-    time.sleep(1)
-    finch.stop()    
+    finch.setMotors(0, 60)
+    obsCheck(finch)
+    time.sleep(1) #Finch rests for 1 second
+    finch.setMotors(0, 0) #Stops the motors
     finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 def drawTriangle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized triangle'''
-    startupDisplay(finch, on, off)
+
     speed = 8
     distance = 50
-    
+
+    startupDisplay(finch, on, off) #Calls function to display smiley face
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMove('F', speed, distance) #Finch moves forward
     obsCheck(finch)
@@ -174,11 +176,12 @@ def drawTriangle(finch, speed, distance, on, off):
 
 def drawCircle(finch, speed, distance, on, off):
     '''Draw method that makes the Finch draw a presized circle'''
-    startupDisplay(finch, on, off)
+
+    startupDisplay(finch, on, off) #Calls function to display smiley face
     obsCheck(finch) #Calls obstacle check method to detect if anything is blocking Finch
     finch.setMotors(0, 100) #Finch turns only right wheel to make circle at speed of 100
-    time.sleep(2)
-    finch.setMotors(0,0)
+    time.sleep(2) #Finch rests for 3 seconds
+    finch.setMotors(0, 0) #Stops the motors
     finishDrawingCelebration(finch, on, off) #Finch alerts user of task completion
 
 # Weather Sensor Methods
@@ -217,7 +220,7 @@ def weatherLights(finch, wtype):
         finch.setBeak(100, 0, 0)
         finch.setTail("all", 100, 0, 0)
 
-def reportWeather(finch):
+def reportWeather(finch, off):
     '''Displays temperature on Finch as scrolling text and beak and tail lights'''
 
     #Get weather data
@@ -233,6 +236,10 @@ def reportWeather(finch):
     message = f"{wtype} {temp}C"
     finch.print(message)
 
+    #Turn off lights/display after temperature is shown
+    time.sleep(len(message) * 0.35 + 3)
+    finch.setBeak(off, off, off)
+    finch.setTail("all", off, off, off)
     
 #Object Sensor Method
 #---------------------
@@ -247,9 +254,9 @@ def obsCheck(finch):
     #Alerts user that there is an object that needs to be moved from the art space
     while dist < 30:
         #Finch's beak will become red
-        finch.playNote(90,1)
+        finch.playNote(90, 1)
         #Plays an F# in the sixth octave to alert
-        finch.setBeak(100,0,0)
+        finch.setBeak(100, 0, 0)
         #Finch turns left 90 degrees
         finch.setTurn('L', 90, 50)
         #Uses sensor to detect object again

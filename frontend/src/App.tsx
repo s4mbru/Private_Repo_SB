@@ -7,6 +7,7 @@ const socket: Socket = io("http://localhost:5555", {
 })
 
 function App() {
+  
   const [status, setStatus] = useState("Connecting...")
 
   useEffect(() => {
@@ -14,17 +15,14 @@ function App() {
       console.log("Connected to backend")
       setStatus("Connected to backend")
     })
-
     socket.on("status", (data) => {
       console.log("Status:", data.message)
       setStatus(data.message)
     })
-
     socket.on("error", (data) => {
       console.error("Error:", data.message)
       setStatus(`Error: ${data.message}`)
     })
-
     return () => {
       socket.off("connect")
       socket.off("status")
